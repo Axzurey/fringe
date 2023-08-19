@@ -1,5 +1,5 @@
 {
-  "name": "@rbxts/fringe",
+  "name": "@rbxts/oxalate",
   "version": "1.0.0",
   "description": "",
   "main": "out/init.lua",
@@ -8,7 +8,7 @@
     "watch": "rbxtsc -w",
     "prepublishOnly": "npm run build",
     "test": "npm run build && ",
-    "test-studio": "run-in-roblox --place fringe_tests/testplace.rbxl --script fringe_tests/out/main.server.lua"
+    "test-studio": "run-in-roblox --place oxalate_tests/testplace.rbxl --script oxalate_tests/out/main.server.lua"
   },
   "keywords": [],
   "author": "",

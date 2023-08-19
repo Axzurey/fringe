@@ -1,5 +1,5 @@
 {
-  "name": "fringe_tests",
+  "name": "oxalate_tests",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -18,5 +18,8 @@
     "eslint": "^8.46.0",
     "eslint-plugin-roblox-ts": "^0.0.35",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@rbxts/testez": "^0.4.2-ts.0"
   }
 }

@@ -5,18 +5,18 @@
 export class Option<T> {
 
     constructor(private value?: T) {
-
-        return setmetatable(this, {
-            __eq: function(a: Option<T>, b: Option<T>) {
-                if (a.value !== undefined && b.value !== undefined) {
-                    if (a.value === b.value) return true;
-                }
-                else if (a.value === undefined && b.value === undefined) {
-                    return true;
-                }
-                return false;
+        (getmetatable(this) as any).__eq = (a: Option<T>, b: Option<T>) => {
+            if (a.value !== undefined && b.value !== undefined) {
+                if (a.value === b.value) return true;
             }
-        });
+            else if (a.value === undefined && b.value === undefined) {
+                return true;
+            }
+            return false;
+        }
+        (getmetatable(this) as any).__tostring = (a: Option<T>) => {
+            return `Option[${a.value}]`;
+        }
     }
 
     is_some(): boolean {
@@ -35,6 +35,15 @@ export class Option<T> {
     expect(message: string): T {
         assert(this.value !== undefined, message);
         return this.value;
+    }
+
+    map<F>(operation: (v: T) => F): Option<F> {
+        if (this.is_some()) {
+            return Some(operation(this.value as T));
+        }
+        else {
+            return None();
+        }
     }
 
     unwrap_or(default_value: T): T {

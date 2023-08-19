@@ -16,10 +16,10 @@
 		"target": "ESNext",
 		"typeRoots": ["node_modules/@rbxts"],
 
-		"rootDirs": ["../src", "src"],
-		"outDir": "testout",
-		"baseUrl": "../src",
+		"rootDirs": ["./src", "../fringe_src/src"],
+		"outDir": "out",
+		"baseUrl": "..",
 		"incremental": true,
-		"tsBuildInfoFile": "out/tsconfig.tsbuildinfo"
-	}
+		"tsBuildInfoFile": "out/tsconfig.tsbuildinfo",
+	},
 }

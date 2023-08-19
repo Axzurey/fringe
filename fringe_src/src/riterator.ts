@@ -1,16 +1,22 @@
+import fnutils from "./fnutils";
 import { None, Option, Some } from "./option";
+import { Ok, Result } from "./result";
 
 export type Iteratable<T> = Array<T>
 
-export default class Iterator<T extends defined> {
+export default class RIterator<T extends defined> {
     private internal_counter = 0;
 
     private constructor(private values: Iteratable<T>) {
         
     };
 
-    static from<T extends defined>(into_iter: Iteratable<T>): Iterator<T> {
-        return new Iterator(into_iter);
+    public static from<T extends defined>(into_iter: Iteratable<T>): RIterator<T> {
+        return new RIterator(into_iter);
+    }
+
+    public static from_riter<T extends defined>(iter: RIterator<T>): RIterator<T> {
+        return new RIterator([...iter.values]);
     }
 
     next(): Option<T> {
@@ -38,31 +44,40 @@ export default class Iterator<T extends defined> {
     }
 
     nth(n: number): Option<T> {
-        let o: Option<T> = None();
-        for (let i = 0; i <= n; i++) {
-            o = this.next();
+        if (n < 0 && -n >= this.values.size()) return None();
+        if (n >= this.values.size()) return None();
+        
+        if (n >= 0) {
+            return Some(this.values[n]);
         }
-        return o;
+        else {
+            return Some(this.values[this.values.size() + n]);
+        }
     }
 
-    chain(iterator: Iterator<T>): Iterator<T> {
-        return Iterator.from([...this.values, ...iterator.values]);
+    chain(iterator: RIterator<T>): RIterator<T> {
+        return RIterator.from([...this.values, ...iterator.values]);
     }
 
-    map<B extends defined>(f: (e: T) => B): Iterator<B> {
+    map<B extends defined>(f: (e: T) => B): RIterator<B> {
         let mapped: B[] = this.values.map((e) => f(e));
-        return Iterator.from(mapped);
+        return RIterator.from(mapped);
     }
 
-    take(n: number): Iterator<T> {
-        if (n >= this.values.size()) return Iterator.from(this.values)
+    take(n: number): Result<RIterator<T>, string> {
+        if (n + this.internal_counter >= this.values.size()) {
+            let slice = fnutils.slice_array(this.values, n);
+            return slice.map((v) => RIterator.from(v));
+        }
+        
         let c: T[] = [];
 
-        for (let i = 0; i < n; i++) {
+        for (let i = this.internal_counter; i < n; i++) {
             let o = this.values[i];
             c.push(o);
         }
-        return Iterator.from(c);
+
+        return Ok(RIterator.from(c));
     }
 
     collect_array(): T[] {

@@ -9,7 +9,7 @@
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
 			"TS": {
-				"$path": "out/server"
+				"$path": "out/fringe_tests"
 			}
 		},
 		"ReplicatedStorage": {
@@ -24,7 +24,7 @@
 				}
 			},
 			"TS": {
-				"$path": "out"
+				"$path": "out/fringe_src/src"
 			}
 		},
 		"Workspace": {
